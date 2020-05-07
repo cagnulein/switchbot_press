@@ -1,6 +1,6 @@
 # switchbot_press
 
-This is a simple project that manage the Switchbot ( https://amzn.to/3dnliBD ) that has only the "press" ability.
+This is a simple project that manage the Switchbot ( https://amzn.to/3dnliBD ) that has only the "press" ability in Home Assistant.
 Infact, the standard Switchbot plugin that comes with HASSIO, has only the ability to turn it on or off, but it doesn't work at all with these Switchbot (different firmware i guess). 
 
 A simple configuration could be:
