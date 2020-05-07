@@ -2,5 +2,5 @@
   "name": "Switchbot_press",
   "content_in_root": true,
   "render_readme": true,
-  "domains": ["switch"],
+  "domains": ["switch"]
 }
