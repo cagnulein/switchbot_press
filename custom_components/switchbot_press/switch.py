@@ -6,7 +6,11 @@ from typing import Any, Dict
 import switchbot
 import voluptuous as vol
 
-from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchDevice
+try:
+    from homeassistant.components.switch import SwitchEntity
+except ImportError:
+    from homeassistant.components.switch import SwitchDevice as SwitchEntity
+from homeassistant.components.switch import PLATFORM_SCHEMA
 from homeassistant.const import CONF_MAC, CONF_NAME, CONF_PASSWORD
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.restore_state import RestoreEntity
@@ -32,7 +36,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities([SwitchBot_press(mac_addr, name, password)])
 
 
-class SwitchBot_press(SwitchDevice, RestoreEntity):
+class SwitchBot_press(SwitchEntity, RestoreEntity):
     """Representation of a Switchbot."""
 
     def __init__(self, mac, name, password) -> None:
