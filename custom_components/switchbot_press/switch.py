@@ -1,6 +1,7 @@
 """Support for Switchbot_press."""
 import logging
 from typing import Any, Dict
+from datetime import datetime
 
 # pylint: disable=import-error, no-member
 import switchbot
@@ -14,6 +15,7 @@ from homeassistant.components.switch import PLATFORM_SCHEMA
 from homeassistant.const import CONF_MAC, CONF_NAME, CONF_PASSWORD
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.restore_state import RestoreEntity
+from homeassistant.util import dt as dt_util
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,6 +46,7 @@ class SwitchBot_press(SwitchEntity, RestoreEntity):
 
         self._state = None
         self._last_run_success = None
+        self._last_pressed: datetime | None = None
         self._name = name
         self._mac = mac
         self._device = switchbot.Switchbot(mac=mac, password=password)
@@ -60,6 +63,7 @@ class SwitchBot_press(SwitchEntity, RestoreEntity):
         """Turn device on."""
         if self._device.press():
             self._state = False
+            self._last_pressed = dt_util.utcnow()
             self._last_run_success = True
         else:
             self._last_run_success = False
@@ -87,7 +91,12 @@ class SwitchBot_press(SwitchEntity, RestoreEntity):
         """Return the name of the switch."""
         return self._name
 
+    def last_pressed(self) -> str:
+        if self._last_pressed is None:
+            return ''
+        return self._last_pressed.isoformat()
+
     @property
     def extra_state_attributes(self) -> Dict[str, Any]:
         """Return the state attributes."""
-        return {"last_run_success": self._last_run_success}
+        return {"last_run_success": self._last_run_success, "last_pressed": self.last_pressed()}
